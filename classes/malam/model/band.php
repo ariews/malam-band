@@ -25,7 +25,7 @@ abstract class Malam_Model_Band extends Model_Bigcontent
      * @var array
      */
     protected $_has_many        = array(
-        'genre'         => array(
+        'genres'         => array(
             'model'         => 'tag',
             'through'       => 'relationship_tags',
             'foreign_key'   => 'object_id',
@@ -62,5 +62,23 @@ abstract class Malam_Model_Band extends Model_Bigcontent
                 return parent::get_field($field);
                 break;
         endswitch;
+    }
+
+    public function create_or_update(array $data)
+    {
+        if ($this->tag_enable())
+        {
+            $genres = ORM::Get_Or_Create_Tag(Arr::get($data, 'join_tags'), 'tag');
+        }
+
+        $result = $this->values($data)->save();
+
+        if ($result->saved() && $this->tag_enable() && ! empty($genres))
+        {
+            $result->remove('genres');
+            $this->add('genres', $genres);
+        }
+
+        return $result;
     }
 }
