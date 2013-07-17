@@ -39,6 +39,8 @@ abstract class Malam_Model_Band extends Model_Bigcontent
 
     protected $_featured_enable = TRUE;
 
+    protected $_has_hierarchy   = FALSE;
+
     public function to_paginate()
     {
         return Paginate::factory($this)
