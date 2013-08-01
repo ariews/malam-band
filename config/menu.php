@@ -12,7 +12,7 @@ return array(
     'admin' => array(
         // ADMIN-BAND
         3 => array(
-            'title'     => __('Artist'),
+            'title'     => __('Band'),
             'url'       => $b->admin_index_url_only(),
         ),
     ),
