@@ -21,6 +21,13 @@ abstract class Malam_Model_Band extends Model_Bigcontent
     protected $_route_name      = 'band';
 
     /**
+     * Enable gallery fot this content
+     *
+     * @var bool
+     */
+    protected $_gallery_enable  = TRUE;
+
+    /**
      * "Has many" relationships
      * @var array
      */
@@ -32,6 +39,9 @@ abstract class Malam_Model_Band extends Model_Bigcontent
             'far_key'       => 'tag_id',
             'polymorph'     => TRUE,
             'type'          => 'band'
+        ),
+        'ringtones'     => array(
+            'model'         => 'ringtone',
         ),
     );
 
@@ -82,5 +92,52 @@ abstract class Malam_Model_Band extends Model_Bigcontent
         }
 
         return $result;
+    }
+
+    public function __get($column)
+    {
+        $return = parent::__get($column);
+
+        if ($column == 'ringtones')
+        {
+            if ($return instanceof Model_Ringtone)
+            {
+                /* @var $return Model_Ringtone */
+                $return->set_band($this);
+            }
+        }
+
+        return $return;
+    }
+
+    protected function prepare_menu()
+    {
+        $menu = array(
+            array(
+                'title' => __(ORM::capitalize_title($this->object_name())),
+                'url'   => $this->admin_index_url_only(),
+            ),
+            array(
+                'title' => __($this->loaded() ? 'Update' : 'Add'),
+                'url'   => $this->loaded()
+                            ? $this->admin_update_url_only()
+                            : $this->admin_create_url_only()
+            ),
+        );
+
+        if ($this->loaded())
+        {
+            $menu[] = array(
+                'title' => __('Galleries'),
+                'url'   => $this->galleries->admin_index_url_only(),
+            );
+
+            $menu[] = array(
+                'title' => __('Ringtones'),
+                'url'   => $this->ringtones->admin_index_url_only(),
+            );
+        }
+
+        $this->_admin_menu = $menu;
     }
 }
