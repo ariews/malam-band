@@ -11,7 +11,7 @@ abstract class Malam_Controller_Admin_Band extends Controller_Abstract_Bigconten
     /**
      * Band
      *
-     * @var Model_News
+     * @var Model_Band
      */
     protected $model            = 'band';
 
