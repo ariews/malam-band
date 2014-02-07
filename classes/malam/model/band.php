@@ -9,18 +9,6 @@ defined('SYSPATH') or die('No direct script access.');
 abstract class Malam_Model_Band extends Model_Bigcontent
 {
     /**
-     * Admin route name
-     * @var string
-     */
-    protected $_admin_route_name = 'admin-band';
-
-    /**
-     * Route name
-     * @var string
-     */
-    protected $_route_name      = 'band';
-
-    /**
      * Enable gallery fot this content
      *
      * @var bool
