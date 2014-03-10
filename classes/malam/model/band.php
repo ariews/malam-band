@@ -41,28 +41,21 @@ abstract class Malam_Model_Band extends Model_Bigcontent
 
     protected $_images_enable   = FALSE;
 
-    public function to_paginate()
-    {
-        return Paginate::factory($this)
-            ->sort('created_at', Paginate::SORT_DESC)
-            ->columns(array($this->primary_key(), 'artist', 'content', 'state'))
-            ->search_columns(array('title', 'content'));
-    }
+    protected $_psearch_columns = array('title', 'content');
+
+    protected $_ptable_columns  = array('id', 'artist', 'content', 'state');
 
     public function get_field($field)
     {
         switch (strtolower($field)):
             case 'artist':
                 return $this->admin_update_url($this->name());
-                break;
 
             case 'content':
                 return $this->content_as_featured_text();
-                break;
 
             default :
                 return parent::get_field($field);
-                break;
         endswitch;
     }
 
